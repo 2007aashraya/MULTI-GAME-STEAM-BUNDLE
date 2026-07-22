@@ -1,0 +1,375 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap');
+
+:root{
+  --void:        #07030d;
+  --deep:        #150826;
+  --purple:      #3b1170;
+  --purple-2:    #6d28d9;
+  --accent:      #b06bff;
+  --accent-bright:#d9a8ff;
+  --ink:         #f3edff;
+  --ink-dim:     #b3a4d6;
+  --line:        rgba(176, 107, 255, 0.18);
+
+  --font-display: 'Orbitron', 'Arial Narrow', sans-serif;
+  --font-body:    'Rajdhani', 'Arial Narrow', sans-serif;
+}
+
+*{ box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body{
+  height: 100%;
+  background: var(--void);
+}
+
+body{
+  font-family: var(--font-body);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+}
+
+/* ============ LAYOUT ============ */
+
+.page{
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* ============ LEFT : GAME WALL ============ */
+
+.gamewall{
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 15% 0%, rgba(109,40,217,0.35), transparent 60%),
+    radial-gradient(120% 90% at 100% 100%, rgba(176,107,255,0.20), transparent 55%),
+    linear-gradient(160deg, var(--void) 0%, var(--deep) 55%, #1b0a30 100%);
+}
+
+.gamewall-grid{
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 0 22px;
+}
+
+.col{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  will-change: transform;
+}
+
+.col--a{ background-image: var(--imgs-a); }
+.col--b{ background-image: var(--imgs-b); }
+.col--c{ background-image: var(--imgs-c); }
+
+.col > .tile{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 10px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+
+.col > .tile::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7,3,13,0) 55%, rgba(7,3,13,0.75) 100%);
+}
+
+/* each column's tile list is duplicated (see home.js), so translating
+   exactly -50% lands perfectly on the start of the duplicate set —
+   that's what makes the loop seamless and continuous, never reversing */
+.col--a{ animation: scrollUp 22s linear infinite; }
+.col--b{ animation: scrollDown 22s linear infinite; }
+.col--c{ animation: scrollUp 26s linear infinite; }
+
+@keyframes scrollUp{
+  0%   { transform: translateY(0%); }
+  100% { transform: translateY(-50%); }
+}
+
+@keyframes scrollDown{
+  0%   { transform: translateY(-50%); }
+  100% { transform: translateY(0%); }
+}
+
+.gamewall-fade{
+  position: absolute;
+  left: 0; right: 0;
+  height: 140px;
+  z-index: 2;
+  pointer-events: none;
+}
+.gamewall-fade.top{
+  top: 0;
+  background: linear-gradient(180deg, var(--void) 0%, rgba(7,3,13,0) 100%);
+}
+.gamewall-fade.bottom{
+  bottom: 0;
+  background: linear-gradient(0deg, var(--void) 0%, rgba(7,3,13,0) 100%);
+}
+
+.tagline{
+  position: absolute;
+  left: 40px;
+  bottom: 48px;
+  z-index: 3;
+  max-width: 480px;
+}
+
+.tagline-eyebrow{
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  font-size: 12px;
+  color: var(--accent-bright);
+  margin-bottom: 14px;
+  text-shadow: 0 0 18px rgba(176,107,255,0.6);
+}
+
+.tagline h2{
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 40px;
+  line-height: 1.12;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  text-shadow: 0 4px 40px rgba(0,0,0,0.7);
+}
+
+/* ============ RIGHT : AUTH PANE ============ */
+
+.authpane{
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 56px;
+  background:
+    radial-gradient(90% 60% at 50% -10%, rgba(176,107,255,0.28), transparent 60%),
+    linear-gradient(200deg, #0c0416 0%, #1a0a30 45%, #06020c 100%);
+  border-left: 1px solid var(--line);
+}
+
+.authpane-glow{
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  top: -180px;
+  right: -180px;
+  background: radial-gradient(closest-side, rgba(109,40,217,0.55), transparent 70%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.brand{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 44px;
+  z-index: 1;
+}
+
+.brand-logo{
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  animation: logoGlow 2.6s ease-in-out infinite;
+}
+
+@keyframes logoGlow{
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(176,107,255,0.55))
+            drop-shadow(0 0 16px rgba(109,40,217,0.35));
+  }
+  50% {
+    filter: drop-shadow(0 0 18px rgba(217,168,255,0.95))
+            drop-shadow(0 0 34px rgba(176,107,255,0.7));
+  }
+}
+
+.brand-name{
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+}
+
+.brand-name-line{
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 19px;
+  letter-spacing: 0.09em;
+  color: var(--ink);
+}
+
+.brand-name-sub{
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--accent-bright);
+  margin-top: 5px;
+}
+
+.auth-card{
+  width: 100%;
+  max-width: 380px;
+  z-index: 1;
+}
+
+.auth-eyebrow{
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  color: var(--accent-bright);
+  margin-bottom: 14px;
+}
+
+.auth-card h1{
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 34px;
+  line-height: 1.15;
+  letter-spacing: 0.03em;
+  margin-bottom: 16px;
+}
+
+.auth-desc{
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink-dim);
+  line-height: 1.5;
+  margin-bottom: 30px;
+}
+
+.field-label{
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  color: var(--ink-dim);
+  margin-bottom: 10px;
+}
+
+.field-wrap{ margin-bottom: 22px; }
+
+.field-input{
+  width: 100%;
+  padding: 16px 18px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.field-input::placeholder{
+  color: #5c4d80;
+  font-weight: 700;
+}
+
+.field-input:focus{
+  border-color: var(--accent);
+  background: rgba(176,107,255,0.06);
+  box-shadow: 0 0 0 4px rgba(176,107,255,0.14);
+}
+
+.field-input.is-error{
+  border-color: #ff5c7a;
+  box-shadow: 0 0 0 4px rgba(255,92,122,0.14);
+  animation: shake 0.35s ease;
+}
+
+@keyframes shake{
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-6px); }
+  75%      { transform: translateX(6px); }
+}
+
+.login-btn{
+  width: 100%;
+  padding: 16px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--purple-2), var(--purple) 70%);
+  box-shadow: 0 10px 30px rgba(109,40,217,0.45), inset 0 1px 0 rgba(255,255,255,0.12);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.login-btn span{
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: 0.28em;
+  color: var(--ink);
+}
+
+.login-btn:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.12);
+  box-shadow: 0 14px 36px rgba(109,40,217,0.6), inset 0 1px 0 rgba(255,255,255,0.16);
+}
+
+.login-btn:active{ transform: translateY(0); }
+
+.login-btn:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: none;
+  transform: none;
+}
+
+.auth-msg{
+  min-height: 20px;
+  margin-top: 16px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.05em;
+}
+
+.auth-msg.error{ color: #ff5c7a; }
+.auth-msg.success{ color: #7cf2b0; }
+
+.footnote{
+  position: absolute;
+  bottom: 26px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  color: #4d3f70;
+}
+
+/* ============ RESPONSIVE ============ */
+
+@media (max-width: 980px){
+  .page{ grid-template-columns: 1fr; grid-template-rows: 45vh 55vh; }
+  .tagline h2{ font-size: 28px; }
+  .authpane{ border-left: none; border-top: 1px solid var(--line); padding: 32px 28px; }
+}
