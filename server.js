@@ -30,6 +30,11 @@ app.use(
 );
 app.use(express.json());
 
+// serve the frontend (index.html, style.css, home.js, intro.html, intro.js,
+// logo.png) straight from this same service — since everything lives
+// together at the repo root, one Render deploy now hosts the whole site
+app.use(express.static(__dirname));
+
 /* ---------- load valid order IDs ---------- */
 
 const KEYS_PATH = path.join(__dirname, "keys.json");
@@ -101,7 +106,7 @@ const loginLimiter = rateLimit({
 
 /* ---------- routes ---------- */
 
-app.get("/", (_req, res) => {
+app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", service: "nullbyte-auth-backend" });
 });
 
