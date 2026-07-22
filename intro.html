@@ -8,12 +8,29 @@
 </head>
 <body>
 
-  <main class="intro">
+  <!-- BOOT SEQUENCE -->
+  <section class="boot" id="boot">
+    <div class="boot__field"></div>
+
+    <img
+      class="boot__mark"
+      src="https://i.postimg.cc/6QfVdbNv/Whats-App-Image-2026-06-26-at-12-01-53-PM-2-removebg-preview.png"
+      alt="Null Byte">
+
+    <div class="boot__log" id="bootLog"></div>
+
+    <div class="boot__bar">
+      <div class="boot__bar-fill" id="bootBarFill"></div>
+    </div>
+    <div class="boot__pct" id="bootPct">00%</div>
+  </section>
+
+  <!-- ACCESS SCREEN (revealed after boot completes) -->
+  <main class="intro" id="intro">
     <div class="intro__field"></div>
 
     <div class="intro__rule" data-reveal="0"></div>
-
-    <p class="intro__eyebrow" data-reveal="1">ORDER VERIFIED</p>
+    <p class="intro__eyebrow" data-reveal="1">ACCESS GRANTED</p>
 
     <img
       class="intro__mark"
@@ -37,7 +54,7 @@
       </svg>
     </a>
 
-    <p class="intro__status" id="introStatus" data-reveal="7">VERIFYING SESSION</p>
+    <p class="intro__status" id="introStatus" data-reveal="7">SESSION ACTIVE</p>
   </main>
 
 <script src="intro.js"></script>
