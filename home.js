@@ -67,10 +67,10 @@
     });
   }
 
-  /* ---------- 2. ORDER-ID AUTHENTICATION (via backend) ----------
-     Set this to your deployed Render URL once it's live, e.g.
-     "https://nullbyte-auth-backend.onrender.com" */
-  const API_BASE_URL = "https://nullbyte-auth-backend.onrender.com";
+  /* Same server now serves both the frontend and the API, so this can
+     just be empty (relative URLs). If you ever split them onto two
+     different hosts again, put the backend's full URL back here. */
+  const API_BASE_URL = "";
 
   async function redirectIfAlreadyLoggedIn() {
     const token = localStorage.getItem("nullbyte_token");
