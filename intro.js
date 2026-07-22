@@ -7,7 +7,7 @@
 (function () {
   "use strict";
 
-  const API_BASE_URL = "https://nullbyte-auth-backend.onrender.com";
+  const API_BASE_URL = ""; // same server now serves frontend + API
   const statusEl = document.getElementById("introStatus");
 
   async function checkSession() {
