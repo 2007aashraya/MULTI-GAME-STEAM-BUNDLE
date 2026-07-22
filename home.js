@@ -67,18 +67,27 @@
     });
   }
 
-  /* ---------- 2. ORDER-ID AUTHENTICATION (frontend demo) ----------
-     NOTE: this is a client-side placeholder only. In production the
-     order IDs below move server-side (e.g. server.js reading from
-     key.json) and this form should POST to that endpoint instead of
-     checking an in-page array. */
-  const VALID_ORDER_IDS = [
-    "NB-0001-XQ7",
-    "NB-0002-K4R",
-    "NB-0003-T9L",
-    "NB-0004-P2W",
-    "NB-0005-Z8H"
-  ];
+  /* ---------- 2. ORDER-ID AUTHENTICATION (via backend) ----------
+     Set this to your deployed Render URL once it's live, e.g.
+     "https://nullbyte-auth-backend.onrender.com" */
+  const API_BASE_URL = "https://nullbyte-auth-backend.onrender.com";
+
+  async function redirectIfAlreadyLoggedIn() {
+    const token = localStorage.getItem("nullbyte_token");
+    if (!token) return;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/session/${token}`);
+      const data = await response.json();
+      if (data.valid) {
+        window.location.href = "intro.html";
+      } else {
+        localStorage.removeItem("nullbyte_token");
+      }
+    } catch (err) {
+      // backend unreachable — let them log in manually
+    }
+  }
 
   function initAuth() {
     const input = document.getElementById("orderId");
@@ -94,7 +103,12 @@
       input.classList.remove("is-error");
     }
 
-    function attemptLogin() {
+    function setLoading(isLoading) {
+      btn.disabled = isLoading;
+      btn.querySelector("span").textContent = isLoading ? "VERIFYING..." : "LOGIN";
+    }
+
+    async function attemptLogin() {
       const value = input.value.trim().toUpperCase();
 
       if (!value) {
@@ -104,26 +118,34 @@
         return;
       }
 
-      btn.disabled = true;
-      btn.querySelector("span").textContent = "VERIFYING...";
+      setLoading(true);
 
-      // simulate a lookup call
-      setTimeout(() => {
-        const isValid = VALID_ORDER_IDS.includes(value);
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId: value }),
+        });
 
-        if (isValid) {
+        const data = await response.json();
+
+        if (response.ok && data.success && data.token) {
           setMessage("ORDER VERIFIED. WELCOME TO THE BUNDLE.", "success");
           clearError();
-          btn.querySelector("span").textContent = "LOGIN";
-          btn.disabled = false;
-          // TODO: redirect to the library / unlock the game wall
+          localStorage.setItem("nullbyte_token", data.token);
+          setTimeout(() => {
+            window.location.href = "intro.html";
+          }, 600);
         } else {
           input.classList.add("is-error");
-          setMessage("ORDER ID NOT RECOGNIZED. CHECK AND TRY AGAIN.", "error");
-          btn.querySelector("span").textContent = "LOGIN";
-          btn.disabled = false;
+          setMessage(data.message || "ORDER ID NOT RECOGNIZED. CHECK AND TRY AGAIN.", "error");
+          setLoading(false);
         }
-      }, 500);
+      } catch (err) {
+        input.classList.add("is-error");
+        setMessage("COULD NOT REACH THE SERVER. TRY AGAIN SHORTLY.", "error");
+        setLoading(false);
+      }
     }
 
     btn.addEventListener("click", attemptLogin);
@@ -139,5 +161,6 @@
   document.addEventListener("DOMContentLoaded", () => {
     renderWall();
     initAuth();
+    redirectIfAlreadyLoggedIn();
   });
 })();
