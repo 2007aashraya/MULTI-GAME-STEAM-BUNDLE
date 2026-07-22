@@ -4,24 +4,41 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NULL BYTE — ACCESS GRANTED</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="intro.css">
 </head>
 <body>
 
-  <div class="intro-page">
-    <div class="intro-glow"></div>
+  <main class="intro">
+    <div class="intro__field"></div>
 
-    <div class="intro-card">
-      <img src="https://i.postimg.cc/6QfVdbNv/Whats-App-Image-2026-06-26-at-12-01-53-PM-2-removebg-preview.png" alt="Null Byte" class="intro-logo">
-      <p class="intro-eyebrow">ACCESS GRANTED</p>
-      <h1>WELCOME TO THE<br>BUNDLE</h1>
-      <p class="intro-desc">Your order has been verified. Your game library is unlocked and ready.</p>
+    <div class="intro__rule" data-reveal="0"></div>
 
-      <a href="#" class="intro-btn" id="continueBtn"><span>ENTER LIBRARY</span></a>
+    <p class="intro__eyebrow" data-reveal="1">ORDER VERIFIED</p>
 
-      <p class="intro-status" id="introStatus">CHECKING SESSION...</p>
-    </div>
-  </div>
+    <img
+      class="intro__mark"
+      data-reveal="2"
+      src="https://i.postimg.cc/6QfVdbNv/Whats-App-Image-2026-06-26-at-12-01-53-PM-2-removebg-preview.png"
+      alt="Null Byte">
+
+    <h1 class="intro__title">
+      <span class="intro__line" data-reveal="3">WELCOME TO THE</span>
+      <span class="intro__line" data-reveal="4">BUNDLE</span>
+    </h1>
+
+    <p class="intro__desc" data-reveal="5">
+      Your order has been verified and your library is unlocked.
+    </p>
+
+    <a href="#" id="enterLibrary" class="intro__cta" data-reveal="6">
+      <span>ENTER LIBRARY</span>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+        <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+
+    <p class="intro__status" id="introStatus" data-reveal="7">VERIFYING SESSION</p>
+  </main>
 
 <script src="intro.js"></script>
 </body>
