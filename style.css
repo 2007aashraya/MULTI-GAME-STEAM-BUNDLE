@@ -368,6 +368,8 @@ body{
 
 /* ============ RESPONSIVE ============ */
 
+/* ============ RESPONSIVE ============ */
+
 @media (max-width: 980px){
   .page{ grid-template-columns: 1fr; grid-template-rows: 45vh 55vh; }
   .tagline h2{ font-size: 28px; }
