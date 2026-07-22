@@ -11,7 +11,7 @@
   const statusEl = document.getElementById("introStatus");
 
   async function checkSession() {
-    const token = sessionStorage.getItem("nullbyte_token");
+    const token = localStorage.getItem("nullbyte_token");
 
     if (!token) {
       redirectToLogin();
@@ -34,7 +34,7 @@
   }
 
   function redirectToLogin(delay) {
-    sessionStorage.removeItem("nullbyte_token");
+    localStorage.removeItem("nullbyte_token");
     setTimeout(() => {
       window.location.href = "index.html";
     }, delay || 300);
