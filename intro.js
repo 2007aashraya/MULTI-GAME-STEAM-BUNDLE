@@ -1,20 +1,33 @@
 /* ============================================================
    NULL BYTE — intro.js
-   Guards the welcome page: only visible with a valid session
-   token issued by the backend at /api/login.
+   Orchestrates the reveal sequence and guards the page behind
+   a valid session token issued by the backend at /api/login.
    ============================================================ */
 
 (function () {
   "use strict";
 
-  const API_BASE_URL = ""; // same server now serves frontend + API
-  const statusEl = document.getElementById("introStatus");
+  const API_BASE_URL = ""; // same server serves frontend + API
 
+  /* ---------- reveal sequence ----------
+     Each [data-reveal] element gets .is-visible added in order, with
+     a short stagger. One pass, no loops, nothing re-animates. */
+  function runRevealSequence() {
+    const els = Array.from(document.querySelectorAll("[data-reveal]"))
+      .sort((a, b) => Number(a.dataset.reveal) - Number(b.dataset.reveal));
+
+    els.forEach((el, i) => {
+      setTimeout(() => el.classList.add("is-visible"), 160 + i * 110);
+    });
+  }
+
+  /* ---------- session guard ---------- */
   async function checkSession() {
+    const statusEl = document.getElementById("introStatus");
     const token = localStorage.getItem("nullbyte_token");
 
     if (!token) {
-      redirectToLogin();
+      redirectToLogin(0);
       return;
     }
 
@@ -25,11 +38,12 @@
       if (data.valid) {
         statusEl.textContent = "SESSION ACTIVE";
       } else {
-        redirectToLogin();
+        statusEl.textContent = "SESSION EXPIRED — RETURNING TO LOGIN";
+        redirectToLogin(900);
       }
     } catch (err) {
-      statusEl.textContent = "COULD NOT VERIFY SESSION — RETRY LOGIN.";
-      redirectToLogin(1500);
+      statusEl.textContent = "COULD NOT VERIFY SESSION — RETRYING LOGIN";
+      redirectToLogin(1200);
     }
   }
 
@@ -37,15 +51,14 @@
     localStorage.removeItem("nullbyte_token");
     setTimeout(() => {
       window.location.href = "index.html";
-    }, delay || 300);
+    }, delay);
   }
 
-  document.addEventListener("DOMContentLoaded", checkSession);
-
-  // "ENTER LIBRARY" is a placeholder until the actual library page exists
   document.addEventListener("DOMContentLoaded", () => {
-    const btn = document.getElementById("continueBtn");
-    btn.addEventListener("click", (e) => {
+    runRevealSequence();
+    checkSession();
+
+    document.getElementById("enterLibrary").addEventListener("click", (e) => {
       e.preventDefault();
       alert("Library page coming soon.");
     });
