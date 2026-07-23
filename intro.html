@@ -27,34 +27,39 @@
 
   <!-- ACCESS SCREEN (revealed after boot completes) -->
   <main class="intro" id="intro">
-    <div class="intro__field"></div>
+    <div class="intro__visual"
+         style="background-image:url('https://i.ibb.co/LXw71d93/Chat-GPT-Image-Jul-22-2026-03-00-14-PM.png')"></div>
 
-    <div class="intro__rule" data-reveal="0"></div>
-    <p class="intro__eyebrow" data-reveal="1">ACCESS GRANTED</p>
+    <div class="intro__content">
+      <div class="intro__field"></div>
 
-    <img
-      class="intro__mark"
-      data-reveal="2"
-      src="https://i.postimg.cc/6QfVdbNv/Whats-App-Image-2026-06-26-at-12-01-53-PM-2-removebg-preview.png"
-      alt="Null Byte">
+      <div class="intro__rule" data-reveal="0"></div>
+      <p class="intro__eyebrow" data-reveal="1">ACCESS GRANTED</p>
 
-    <h1 class="intro__title">
-      <span class="intro__line" data-reveal="3">WELCOME TO THE</span>
-      <span class="intro__line" data-reveal="4">BUNDLE</span>
-    </h1>
+      <img
+        class="intro__mark"
+        data-reveal="2"
+        src="https://i.postimg.cc/6QfVdbNv/Whats-App-Image-2026-06-26-at-12-01-53-PM-2-removebg-preview.png"
+        alt="Null Byte">
 
-    <p class="intro__desc" data-reveal="5">
-      Your order has been verified and your library is unlocked.
-    </p>
+      <h1 class="intro__title">
+        <span class="intro__line" data-reveal="3">WELCOME TO THE</span>
+        <span class="intro__line" data-reveal="4">BUNDLE</span>
+      </h1>
 
-    <a href="#" id="enterLibrary" class="intro__cta" data-reveal="6">
-      <span>ENTER LIBRARY</span>
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
-        <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
+      <p class="intro__desc" data-reveal="5">
+        Your order has been verified and your library is unlocked.
+      </p>
 
-    <p class="intro__status" id="introStatus" data-reveal="7">SESSION ACTIVE</p>
+      <a href="#" id="enterLibrary" class="intro__cta" data-reveal="6">
+        <span>ENTER LIBRARY</span>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+
+      <p class="intro__status" id="introStatus" data-reveal="7">SESSION ACTIVE</p>
+    </div>
   </main>
 
 <script src="intro.js"></script>
