@@ -9,15 +9,18 @@ const crypto = require("crypto");
 const rateLimit = require("express-rate-limit");
 const fs = require("fs");
 const path = require("path");
+const store = require("./store");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Render sits behind a reverse proxy — this tells Express to trust its
+// X-Forwarded-For header. Without it, express-rate-limit throws on
+// every request instead of rate-limiting.
+app.set("trust proxy", 1);
+
 /* ---------- config ---------- */
 
-// Comma-separated list of origins allowed to call this API.
-// Set this in Render's environment variables, e.g.:
-//   FRONTEND_ORIGIN = https://yourname.github.io,https://nullbyte.example.com
 const allowedOrigins = (process.env.FRONTEND_ORIGIN || "*")
   .split(",")
   .map((o) => o.trim())
@@ -30,75 +33,37 @@ app.use(
 );
 app.use(express.json());
 
-// serve the frontend (index.html, style.css, home.js, intro.html, intro.js,
-// logo.png) straight from this same service — since everything lives
-// together at the repo root, one Render deploy now hosts the whole site
+// serve the frontend (index.html, style.css, home.js, intro.html,
+// intro.css, intro.js, library.html, etc.) from this same service
 app.use(express.static(__dirname));
 
-/* ---------- load valid order IDs ---------- */
+/* ---------- load order IDs + package assignment ---------- */
 
 const KEYS_PATH = path.join(__dirname, "keys.json");
-const REDEEMED_PATH = path.join(__dirname, "redeemed.json");
 
-function loadOrderIds() {
+function loadOrders() {
   const raw = fs.readFileSync(KEYS_PATH, "utf8");
   const data = JSON.parse(raw);
-  return new Set(data.orderIds.map((id) => id.trim().toUpperCase()));
+  const byId = new Map();
+  data.orders.forEach((o) => byId.set(o.id.trim().toUpperCase(), o.package));
+  return { byId, packages: data.packages };
 }
 
-function loadRedeemed() {
-  try {
-    const raw = fs.readFileSync(REDEEMED_PATH, "utf8");
-    return new Set(JSON.parse(raw));
-  } catch (err) {
-    return new Set(); // file doesn't exist yet — nothing redeemed
-  }
+let { byId: ORDER_PACKAGE, packages: PACKAGES } = loadOrders();
+
+/* ---------- session + redemption (persistent) ---------- */
+
+const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30; // 30 days — "stay logged in"
+
+function createToken() {
+  return crypto.randomBytes(24).toString("hex");
 }
 
-function saveRedeemed(set) {
-  fs.writeFileSync(REDEEMED_PATH, JSON.stringify([...set], null, 2));
-}
-
-let VALID_ORDER_IDS = loadOrderIds();
-let REDEEMED_ORDER_IDS = loadRedeemed();
-
-/* ---------- in-memory session store ----------
-   Fine for a single Render instance / demo scale. For anything
-   bigger, swap this Map for Redis or a small database table. */
-
-const SESSIONS = new Map(); // token -> expiresAt (ms)
-const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 30; // 30 days — "stay logged in"
-
-function createSession() {
-  const token = crypto.randomBytes(24).toString("hex");
-  SESSIONS.set(token, Date.now() + SESSION_TTL_MS);
-  return token;
-}
-
-function isSessionValid(token) {
-  const expiresAt = SESSIONS.get(token);
-  if (!expiresAt) return false;
-  if (Date.now() > expiresAt) {
-    SESSIONS.delete(token);
-    return false;
-  }
-  return true;
-}
-
-// sweep expired sessions periodically so the Map doesn't grow forever
-setInterval(() => {
-  const now = Date.now();
-  for (const [token, expiresAt] of SESSIONS) {
-    if (now > expiresAt) SESSIONS.delete(token);
-  }
-}, 1000 * 60 * 30);
-
-/* ---------- rate limiting ----------
-   Slows down brute-force guessing of order IDs. */
+/* ---------- rate limiting ---------- */
 
 const loginLimiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 20, // 20 attempts per IP per window
+  windowMs: 10 * 60 * 1000,
+  max: 20,
   standardHeaders: true,
   legacyHeaders: false,
   message: { success: false, message: "Too many attempts. Try again later." },
@@ -107,49 +72,70 @@ const loginLimiter = rateLimit({
 /* ---------- routes ---------- */
 
 app.get("/api/health", (_req, res) => {
-  res.json({ status: "ok", service: "nullbyte-auth-backend" });
+  res.json({ status: "ok", service: "nullbyte-auth-backend", persistent: store.usingUpstash });
 });
 
-app.post("/api/login", loginLimiter, (req, res) => {
+app.post("/api/login", loginLimiter, async (req, res) => {
   const orderId = String(req.body?.orderId || "").trim().toUpperCase();
 
   if (!orderId) {
     return res.status(400).json({ success: false, message: "Order ID is required." });
   }
 
-  if (!VALID_ORDER_IDS.has(orderId)) {
+  const pkg = ORDER_PACKAGE.get(orderId);
+  if (!pkg) {
     return res.status(401).json({ success: false, message: "Order ID not recognized." });
   }
 
-  if (REDEEMED_ORDER_IDS.has(orderId)) {
+  const alreadyRedeemed = await store.get(`redeemed:${orderId}`);
+  if (alreadyRedeemed) {
     return res.status(401).json({
       success: false,
       message: "This Order ID has already been used to log in.",
     });
   }
 
-  REDEEMED_ORDER_IDS.add(orderId);
-  saveRedeemed(REDEEMED_ORDER_IDS);
+  // mark redeemed permanently (no TTL) — one-time use, forever
+  await store.set(`redeemed:${orderId}`, "1");
 
-  const token = createSession();
-  res.json({ success: true, token });
+  const token = createToken();
+  await store.set(
+    `session:${token}`,
+    JSON.stringify({ orderId, package: pkg }),
+    SESSION_TTL_SECONDS
+  );
+
+  res.json({ success: true, token, package: pkg });
 });
 
-app.get("/api/session/:token", (req, res) => {
-  const { token } = req.params;
-  res.json({ valid: isSessionValid(token) });
+app.get("/api/me/:token", async (req, res) => {
+  const raw = await store.get(`session:${req.params.token}`);
+  if (!raw) return res.json({ valid: false });
+
+  const session = JSON.parse(raw);
+  res.json({
+    valid: true,
+    package: session.package,
+    packageInfo: PACKAGES[session.package] || null,
+  });
 });
 
-// hot-reload keys.json without redeploying, in case you update it via
-// Render's shell or a future admin route
+// kept for backwards compatibility with earlier frontend code
+app.get("/api/session/:token", async (req, res) => {
+  const raw = await store.get(`session:${req.params.token}`);
+  res.json({ valid: Boolean(raw) });
+});
+
 app.post("/api/reload-keys", (req, res) => {
   const adminKey = req.headers["x-admin-key"];
   if (!process.env.ADMIN_KEY || adminKey !== process.env.ADMIN_KEY) {
     return res.status(403).json({ success: false, message: "Forbidden." });
   }
   try {
-    VALID_ORDER_IDS = loadOrderIds();
-    res.json({ success: true, count: VALID_ORDER_IDS.size });
+    const reloaded = loadOrders();
+    ORDER_PACKAGE = reloaded.byId;
+    PACKAGES = reloaded.packages;
+    res.json({ success: true, count: ORDER_PACKAGE.size });
   } catch (err) {
     res.status(500).json({ success: false, message: "Failed to reload keys." });
   }
@@ -157,4 +143,5 @@ app.post("/api/reload-keys", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`nullbyte-auth-backend listening on port ${PORT}`);
+  console.log(`persistent store: ${store.usingUpstash ? "Upstash Redis" : "in-memory (NOT persistent — set UPSTASH_REDIS_REST_URL/TOKEN)"}`);
 });
