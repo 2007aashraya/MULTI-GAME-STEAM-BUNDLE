@@ -32,7 +32,7 @@
     const token = localStorage.getItem("nullbyte_token");
     if (!token) return false;
     try {
-      const res = await fetch(`${API_BASE_URL}/api/session/${token}`);
+      const res = await fetch(`${API_BASE_URL}/api/me/${token}`);
       const data = await res.json();
       return !!data.valid;
     } catch (err) {
@@ -119,7 +119,7 @@
 
     document.getElementById("enterLibrary").addEventListener("click", (e) => {
       e.preventDefault();
-      alert("Library page coming soon.");
+      window.location.href = "library.html";
     });
   });
 })();
