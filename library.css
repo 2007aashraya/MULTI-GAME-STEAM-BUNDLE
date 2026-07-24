@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap');
+
+:root{
+  --void:        #07030d;
+  --deep:        #150826;
+  --purple:      #3b1170;
+  --purple-2:    #6d28d9;
+  --accent:      #b06bff;
+  --accent-bright:#d9a8ff;
+  --gold:        #e8c15a;
+  --ink:         #f3edff;
+  --ink-dim:     #9c8cc2;
+  --ink-faint:   #4d3f70;
+  --line:        rgba(176, 107, 255, 0.16);
+
+  --font-display: 'Orbitron', 'Arial Narrow', sans-serif;
+  --font-body:    'Rajdhani', 'Arial Narrow', sans-serif;
+}
+
+*{ box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body{ min-height: 100%; background: var(--void); }
+
+body{
+  font-family: var(--font-body);
+  color: var(--ink);
+}
+
+.lib{
+  min-height: 100vh;
+  background:
+    radial-gradient(60% 40% at 15% 0%, rgba(109,40,217,0.22), transparent 60%),
+    linear-gradient(165deg, var(--void) 0%, var(--deep) 55%, #170a2c 100%);
+}
+
+.lib__header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 5vw;
+  border-bottom: 1px solid var(--line);
+}
+
+.lib__brand{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lib__logo{
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.lib__brand-name{
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+}
+
+.lib__badge{
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--ink-dim);
+}
+
+.lib__badge.standard{ color: var(--accent-bright); border-color: rgba(176,107,255,0.35); }
+.lib__badge.deluxe{ color: var(--gold); border-color: rgba(232,193,90,0.4); }
+
+.lib__body{
+  padding: 48px 5vw 80px;
+}
+
+.lib__status{
+  font-size: 15px;
+  color: var(--ink-dim);
+}
+
+.lib__intro{
+  margin-bottom: 40px;
+}
+
+.lib__eyebrow{
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--accent-bright);
+  margin-bottom: 12px;
+}
+
+.lib__title{
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(26px, 3.4vw, 38px);
+  letter-spacing: 0.02em;
+  margin-bottom: 10px;
+}
+
+.lib__sub{
+  font-size: 15px;
+  color: var(--ink-dim);
+  max-width: 560px;
+  line-height: 1.55;
+}
+
+.lib__section-label{
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  color: var(--ink);
+  margin: 36px 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lib__section-label.gold{ color: var(--gold); }
+
+.lib__grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.lib__tile{
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: 10px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lib__tile:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 16px 34px rgba(0,0,0,0.6);
+}
+
+.lib__locked-note{
+  margin-top: 46px;
+  padding: 20px 22px;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  font-size: 13.5px;
+  color: var(--ink-faint);
+  max-width: 560px;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px){
+  .lib__header{ padding: 18px 6vw; }
+  .lib__body{ padding: 36px 6vw 60px; }
+}
