@@ -1,105 +1,416 @@
 {
-  "orderIds": [
-    "ORD-58391472",
-    "ORD-10482736",
-    "ORD-92746185",
-    "ORD-35091827",
-    "ORD-76120493",
-    "ORD-48273615",
-    "ORD-61984320",
-    "ORD-84529176",
-    "ORD-29371548",
-    "ORD-57018294",
-    "ORD-91462837",
-    "ORD-72645019",
-    "ORD-38197526",
-    "ORD-65821490",
-    "ORD-14750386",
-    "ORD-83269471",
-    "ORD-50918324",
-    "ORD-27486015",
-    "ORD-96135248",
-    "ORD-43870519",
-    "ORD-78562134",
-    "ORD-19284657",
-    "ORD-64091583",
-    "ORD-85713046",
-    "ORD-31579824",
-    "ORD-98421657",
-    "ORD-46078231",
-    "ORD-72351968",
-    "ORD-15649380",
-    "ORD-89174025",
-    "ORD-54812796",
-    "ORD-26938415",
-    "ORD-93756120",
-    "ORD-41082579",
-    "ORD-68297134",
-    "ORD-12349087",
-    "ORD-87436251",
-    "ORD-59601843",
-    "ORD-23174598",
-    "ORD-76842910",
-    "ORD-90561472",
-    "ORD-35718064",
-    "ORD-61429385",
-    "ORD-84957031",
-    "ORD-29068147",
-    "ORD-73591420",
-    "ORD-18246795",
-    "ORD-96382014",
-    "ORD-42175983",
-    "ORD-57830619",
-    "ORD-81629475",
-    "ORD-34087126",
-    "ORD-69215384",
-    "ORD-15794032",
-    "ORD-90427168",
-    "ORD-48361520",
-    "ORD-72849051",
-    "ORD-26157394",
-    "ORD-87513029",
-    "ORD-51986473",
-    "ORD-34219680",
-    "ORD-79042516",
-    "ORD-14873529",
-    "ORD-93658041",
-    "ORD-47021985",
-    "ORD-62485317",
-    "ORD-85196240",
-    "ORD-21349758",
-    "ORD-76904132",
-    "ORD-59027864",
-    "ORD-38416520",
-    "ORD-91753048",
-    "ORD-64578013",
-    "ORD-27041895",
-    "ORD-83214576",
-    "ORD-15672849",
-    "ORD-98160435",
-    "ORD-52384710",
-    "ORD-64731928",
-    "ORD-31856204",
-    "ORD-79523061",
-    "ORD-20487153",
-    "ORD-86914520",
-    "ORD-45139087",
-    "ORD-73658214",
-    "ORD-19847560",
-    "ORD-90468321",
-    "ORD-57284139",
-    "ORD-34095781",
-    "ORD-68123945",
-    "ORD-12960873",
-    "ORD-84753196",
-    "ORD-46019827",
-    "ORD-79326450",
-    "ORD-21584069",
-    "ORD-95837142",
-    "ORD-63482015",
-    "ORD-37154968",
-    "ORD-80261594",
-    "ORD-54718230",
-    "ORD-16974385"
+  "packages": {
+    "standard": {
+      "label": "Standard Package",
+      "price": 599,
+      "currency": "NPR"
+    },
+    "deluxe": {
+      "label": "Deluxe Package",
+      "price": 799,
+      "currency": "NPR"
+    }
+  },
+  "orders": [
+    {
+      "id": "ORD-58391472",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-10482736",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-92746185",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-35091827",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-76120493",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-48273615",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-61984320",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-84529176",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-29371548",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-57018294",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-91462837",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-72645019",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-38197526",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-65821490",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-14750386",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-83269471",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-50918324",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-27486015",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-96135248",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-43870519",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-78562134",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-19284657",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-64091583",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-85713046",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-31579824",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-98421657",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-46078231",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-72351968",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-15649380",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-89174025",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-54812796",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-26938415",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-93756120",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-41082579",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-68297134",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-12349087",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-87436251",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-59601843",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-23174598",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-76842910",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-90561472",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-35718064",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-61429385",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-84957031",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-29068147",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-73591420",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-18246795",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-96382014",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-42175983",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-57830619",
+      "package": "standard"
+    },
+    {
+      "id": "ORD-81629475",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-34087126",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-69215384",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-15794032",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-90427168",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-48361520",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-72849051",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-26157394",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-87513029",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-51986473",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-34219680",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-79042516",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-14873529",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-93658041",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-47021985",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-62485317",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-85196240",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-21349758",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-76904132",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-59027864",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-38416520",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-91753048",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-64578013",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-27041895",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-83214576",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-15672849",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-98160435",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-52384710",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-64731928",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-31856204",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-79523061",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-20487153",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-86914520",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-45139087",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-73658214",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-19847560",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-90468321",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-57284139",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-34095781",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-68123945",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-12960873",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-84753196",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-46019827",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-79326450",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-21584069",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-95837142",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-63482015",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-37154968",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-80261594",
+      "package": "deluxe"
+    },
+    {
+      "id": "ORD-54718230",
+      "package": "deluxe"
+    }
   ]
 }
